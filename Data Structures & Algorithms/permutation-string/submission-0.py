@@ -1,0 +1,38 @@
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+
+        if len(s1) > len(s2):
+            return False
+
+        count1 = {}
+        count2 = {}
+
+        # build frequency for s1
+        for c in s1:
+            if c in count1:
+                count1[c] += 1
+            else:
+                count1[c] = 1
+
+        left = 0
+
+        for right in range(len(s2)):
+
+            # add new character to window
+            if s2[right] in count2:
+                count2[s2[right]] += 1
+            else:
+                count2[s2[right]] = 1
+
+            # shrink window if larger than s1
+            if right - left + 1 > len(s1):
+                count2[s2[left]] -= 1
+                if count2[s2[left]] == 0:
+                    del count2[s2[left]]
+                left += 1
+
+            # compare frequency maps
+            if count1 == count2:
+                return True
+
+        return False
